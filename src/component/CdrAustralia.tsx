@@ -116,11 +116,13 @@ const onSubmit = async () => {
     console.error('Payment error:', error);
   }
 };
+    const [activeStep, setActiveStep] = useState(1)
 
   return (
     <>
      <div className="flex w-full h-screen">
-      <div className="w-1/2 bg-[#43B138] pt-12 pl-[72px] flex items-start polygon overflow-hidden">
+      <div className="w-1/2 bg-[#43B138] pt-12 pl-[72px] flex items-start polygon overflow-hidden bg-[url(/bg-image.png)] bg-no-repeat bg-cover bg-left
+      ">
         <div className="max-w-[465px] w-full">
             <Logo />
 
@@ -133,6 +135,60 @@ const onSubmit = async () => {
             <span className="border-b-2 border-[#404348] pb-1">Pay</span>ment
           </p>
 
+         <div className="mt-10 flex items-center">
+        <div onClick={() => setActiveStep(1)} className="cursor-pointer text-center">
+          <div
+            className='rounded-full h-8 w-8 flex items-center justify-center font-semibold ring-2 ring-[#43B138] bg-[#43B138] text-white '
+          >
+            1
+          </div>
+          <p className="text-[#6C6C6C] text-xs font-semibold pt-1">Amount</p>
+        </div>
+
+        <hr className="border border-[#EDEEEF] mx-2 w-[92px] mb-5" />
+
+        <div   onClick={() => {
+      if (amount && !isNaN(Number(amount)) && Number(amount) > 0) {
+        setActiveStep(2);
+      } else {
+        alert('Please enter a valid amount before proceeding.');
+      }
+    }} className="cursor-pointer text-center">
+          <div
+            className={`rounded-full h-8 w-8 flex items-center justify-center font-semibold ${
+              activeStep === 2
+                ? 'ring-2 ring-[#43B138] bg-[#43B138] text-white'
+                : 'ring-2 ring-[#E1E1E5] bg-white text-[#404348]'
+            }`}
+          >
+            2
+          </div>
+          <p className="text-[#6C6C6C] text-xs font-semibold pt-1">Billing</p>
+        </div>
+      </div>
+
+    {activeStep === 1 && (
+        <div className="mt-10">
+          <label className="block text-sm font-semibold text-[#404348] mb-1">Amount</label>
+          <div className="relative max-w-[465px] mt-1.5">
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#404348] mr-3 flex items-center">
+              AUD
+              <span className="inline-block w-[1px] h-[14px] bg-[#404348] opacity-50 ml-3"></span>
+            </span>
+           <input
+  value={amount}
+  onChange={(e) => setAmount(e.target.value)}
+  className="border border-[#ECECEC] rounded-[6px] focus:outline-none w-full pl-[68px] p-3.5 text-[#404348] bg-transparent"
+  placeholder="Enter Amount"
+/>
+
+          </div>
+        </div>
+      )}
+      {activeStep ===2 &&
+
+      <div>
+        
           <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
             <div>
               <label className="block font-medium text-[#404348]">Email</label>
@@ -342,6 +398,9 @@ const onSubmit = async () => {
             <p className="text-[#6C6C6C] text-sm">Terms</p>
             <p className="text-[#6C6C6C] text-sm pl-4">Privacy</p>
           </div>
+      </div>
+      }
+
         </div>
       </div>
 

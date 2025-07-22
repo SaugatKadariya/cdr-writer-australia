@@ -16,9 +16,6 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ modal,transactionId,date,am
   return (
     <div className="fixed inset-0 bg-[#000000]/60 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-xl shadow-lg w-[540px]">
-        {/* <div className='flex justify-end mb-5 cursor-pointer' onClick={() => setModal(false)}>
-          <Cross />
-        </div> */}
         <div className='flex flex-col items-center justify-center'>
           <Star />
           <p className="text-xl font-semibold mb-4 text-[#31343A]">Payment Successful</p>
