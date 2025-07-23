@@ -58,7 +58,10 @@ function CdrAustralia() {
     'state',
     'country', 
   ]);
-
+  const handleChange = (e: { target: { value: string; }; }) => {
+    const value = e.target.value.replace(/[^\d.]/g, '');
+    setAmount(value);
+  };
   const anyEmpty =
     watchedFields.some((field) => !field || field.trim() === '') || !amount;
 const onSubmit = async () => {
@@ -69,7 +72,7 @@ const onSubmit = async () => {
   try {
     const res = await fetch('http://54.179.157.41:8080/public/v1/stripes/create-payment-intent', {
       method: 'POST',
-      headers: { 'Content-Type': 'CdrAustralialication/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ amount: Math.round(numericAmount * 100) }), 
     });
 
@@ -92,7 +95,7 @@ const onSubmit = async () => {
     } else if (result.paymentIntent?.status === 'succeeded') {
       await fetch('http://54.179.157.41:8080/public/v1/stripes/success', {
         method: 'POST',
-        headers: { 'Content-Type': 'CdrAustralialication/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ intentId: result.paymentIntent.id }),
       });
 
@@ -108,7 +111,7 @@ const onSubmit = async () => {
       setModal(true);
 
       setTimeout(() => {
-        window.location.href = 'https://www.cdrreportwriter.com/';
+        window.location.href = 'https://www.cdrwriteraustralia.com/';
       }, 5000);
     }
   } catch (error) {
@@ -120,8 +123,8 @@ const onSubmit = async () => {
 
   return (
     <>
-     <div className="flex w-full h-screen">
-      <div className="w-1/2 bg-[#43B138] pt-12 pl-[72px] flex items-start polygon overflow-hidden bg-[url(/bg-image.png)] bg-no-repeat bg-cover bg-left
+     <div className="xl:flex w-full h-screen">
+      <div className="xl:w-[44%] h-90 xl:h-screen bg-[#43B138] pt-12 pl-[72px] flex items-start polygon overflow-hidden bg-[url(/bg-image.png)] bg-no-repeat bg-cover bg-left
       ">
         <div className="max-w-[465px] w-full">
             <Logo />
@@ -129,7 +132,7 @@ const onSubmit = async () => {
         </div>
       </div>
 
-     <div className="xl:w-1/2 bg-white overflow-y-auto flex justify-center items-center">
+     <div className="xl:w-[56%] bg-white overflow-y-auto w-full flex justify-center items-start ">
         <div className="pt-12 xl:pl-[70px] px-4 pb-12 max-w-[540px]">
           <p className="text-[#404348] font-semibold text-2xl">
             <span className="border-b-2 border-[#404348] pb-1">Pay</span>ment
@@ -147,13 +150,7 @@ const onSubmit = async () => {
 
         <hr className="border border-[#EDEEEF] mx-2 w-[92px] mb-5" />
 
-        <div   onClick={() => {
-      if (amount && !isNaN(Number(amount)) && Number(amount) > 0) {
-        setActiveStep(2);
-      } else {
-        alert('Please enter a valid amount before proceeding.');
-      }
-    }} className="cursor-pointer text-center">
+        <div   className=" text-center">
           <div
             className={`rounded-full h-8 w-8 flex items-center justify-center font-semibold ${
               activeStep === 2
@@ -170,19 +167,27 @@ const onSubmit = async () => {
     {activeStep === 1 && (
         <div className="mt-10">
           <label className="block text-sm font-semibold text-[#404348] mb-1">Amount</label>
-          <div className="relative max-w-[465px] mt-1.5">
+          <div className="relative w-[520px] mt-1.5">
             <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#404348] mr-3 flex items-center">
               AUD
               <span className="inline-block w-[1px] h-[14px] bg-[#404348] opacity-50 ml-3"></span>
             </span>
            <input
   value={amount}
-  onChange={(e) => setAmount(e.target.value)}
+  onChange={handleChange}
   className="border border-[#ECECEC] rounded-[6px] focus:outline-none w-full pl-[68px] p-3.5 text-[#404348] bg-transparent"
   placeholder="Enter Amount"
 />
 
           </div>
+          <button className={`mt-6 py-2.5 bg-[#43B138] text-white rounded-lg w-[520px]  ${!amount ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+           onClick={() => {
+      if (amount && !isNaN(Number(amount)) && Number(amount) > 0) {
+        setActiveStep(2);
+      } else {
+        alert('Please enter a valid amount before proceeding.');
+      }
+    }} disabled={!amount}>Proceed</button>
         </div>
       )}
       {activeStep ===2 &&
@@ -271,7 +276,7 @@ const onSubmit = async () => {
             </div>
 
             <div>
-              <label className="block font-medium text-[#404348]">Name</label>
+              <label className="block font-medium text-[#404348]">Name on Card</label>
               <input
                 {...register('name')}
                 type="text"
@@ -382,11 +387,11 @@ const onSubmit = async () => {
               disabled={anyEmpty}
               className={`mt-4 mb-5 px-6 py-2 rounded w-full text-white ${
                 anyEmpty
-                  ? 'bg-[#BBB4FE] cursor-not-allowed'
-                  : 'bg-[#5926DB] cursor-pointer'
+                  ? 'bg-[#8BD883] cursor-not-allowed'
+                  : 'bg-[#43B138] cursor-pointer'
               }`}
             >
-              Pay
+              Pay | AUD {amount}
             </button>
           </form>
 
