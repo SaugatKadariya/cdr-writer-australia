@@ -112,7 +112,7 @@ const onSubmit = async () => {
 
       setTimeout(() => {
         window.location.href = 'https://www.cdrwriteraustralia.com/';
-      }, 5000);
+      }, 30000);
     }
   } catch (error) {
     alert('Something went wrong. Please try again.');
